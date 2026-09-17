@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nagarassha Vithusan — CTO | Resume</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,40 +25,18 @@
     --muted: #718096;
     --border: #e0e6ef;
     --shadow: rgba(26, 42, 108, 0.15);
-    --linkedin: #0a66c2;
-    --github: #24292e;
-    --whatsapp: #25d366;
-  }
-
-  body.dark {
-    --bg: #0d1117;
-    --card: #161b22;
-    --sidebar: #1c2128;
-    --text: #e6edf3;
-    --text-light: #c9d1d9;
-    --muted: #8b949e;
-    --border: #30363d;
-    --shadow: rgba(0, 0, 0, 0.5);
-    --navy: #58a6ff;
-    --navy-dark: #1f6feb;
-    --navy-light: #79c0ff;
-    --github: #c9d1d9;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: var(--bg);
     padding: 40px 20px;
     color: var(--text);
     line-height: 1.6;
-    transition: background 0.4s ease, color 0.4s ease;
   }
 
-  body.lang-ta { font-family: 'Noto Sans Tamil', 'Poppins', sans-serif; }
-
-  /* CONTROLS */
   .controls {
     position: fixed;
     top: 20px;
@@ -65,9 +44,6 @@
     display: flex;
     gap: 10px;
     z-index: 999;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    max-width: 300px;
   }
 
   .ctrl-btn {
@@ -91,15 +67,6 @@
   .ctrl-btn:hover { transform: scale(1.1) rotate(8deg); background: var(--gold); }
   .ctrl-btn:active { transform: scale(0.95); }
 
-  .ctrl-btn.lang-btn {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    width: auto;
-    padding: 0 16px;
-    border-radius: 23px;
-  }
-
   .ctrl-btn::after {
     content: attr(data-tip);
     position: absolute;
@@ -120,7 +87,6 @@
 
   .ctrl-btn:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
 
-  /* RESUME */
   .resume {
     max-width: 950px;
     margin: 0 auto;
@@ -128,16 +94,8 @@
     box-shadow: 0 25px 70px var(--shadow);
     border-radius: 14px;
     overflow: hidden;
-    animation: fadeUp 0.9s ease;
-    transition: background 0.4s ease;
   }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* HEADER */
   .header {
     background: linear-gradient(135deg, #1a2a6c 0%, #2a4d8f 50%, #1e3c72 100%);
     color: #ffffff;
@@ -149,8 +107,6 @@
     overflow: hidden;
   }
 
-  body.dark .header { background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1f6feb 130%); }
-
   .header::before, .header::after {
     content: '';
     position: absolute;
@@ -159,13 +115,8 @@
     pointer-events: none;
   }
 
-  .header::before { width: 420px; height: 420px; top: -55%; right: -12%; animation: float 9s ease-in-out infinite; }
-  .header::after { width: 300px; height: 300px; bottom: -65%; right: 18%; background: rgba(240, 165, 0, 0.08); animation: float 11s ease-in-out infinite reverse; }
-
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(-25px, 25px) scale(1.08); }
-  }
+  .header::before { width: 420px; height: 420px; top: -55%; right: -12%; }
+  .header::after { width: 300px; height: 300px; bottom: -65%; right: 18%; background: rgba(240, 165, 0, 0.08); }
 
   .avatar-wrap { position: relative; flex-shrink: 0; z-index: 2; }
 
@@ -174,78 +125,16 @@
     height: 130px;
     border-radius: 50%;
     border: 5px solid rgba(255, 255, 255, 0.35);
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    background: #f0a500;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
-    font-weight: 800;
-    color: var(--navy-dark);
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    transition: transform 0.4s ease;
-    cursor: pointer;
     position: relative;
   }
 
-  .avatar:hover { transform: scale(1.06) rotate(-3deg); }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-  .avatar-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 11px;
-    font-weight: 600;
-    text-align: center;
-    padding: 8px;
-  }
-
-  .avatar:hover .avatar-overlay { opacity: 1; }
-  .avatar-overlay .cam-icon { font-size: 22px; }
-
-  .upload-btn {
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--gold);
-    color: #fff;
-    border: 3px solid #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    transition: transform 0.25s ease, background 0.3s ease;
-    z-index: 3;
-  }
-
-  .upload-btn:hover { transform: scale(1.15); background: var(--gold-light); }
-  #photoInput { display: none; }
-
-  .avatar-wrap::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    border: 2px dashed rgba(240, 165, 0, 0.55);
-    animation: spin 18s linear infinite;
-    pointer-events: none;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .header-info { z-index: 2; flex: 1; min-width: 0; }
 
@@ -256,6 +145,7 @@
     text-transform: uppercase;
     line-height: 1.12;
     margin-bottom: 8px;
+    color: #ffffff;
   }
 
   .header-info h1 span {
@@ -264,12 +154,8 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 4s linear infinite;
   }
 
-  @keyframes shine { to { background-position: 200% center; } }
-
-  /* ✅ TYPING TITLE — enhanced */
   .typed-title {
     font-family: 'JetBrains Mono', monospace;
     font-size: 16px;
@@ -283,9 +169,7 @@
     gap: 2px;
   }
 
-  .typed-text {
-    color: #a8c8f0;
-  }
+  .typed-text { color: #a8c8f0; }
 
   .typed-title .cursor {
     display: inline-block;
@@ -295,7 +179,6 @@
     margin-left: 4px;
     vertical-align: middle;
     animation: blink 0.8s step-end infinite;
-    box-shadow: 0 0 8px rgba(240, 165, 0, 0.6);
   }
 
   @keyframes blink { 50% { opacity: 0; } }
@@ -308,10 +191,10 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: color 0.25s ease, transform 0.25s ease;
+    transition: color 0.25s ease;
   }
 
-  .contact-bar a:hover { color: var(--gold-light); transform: translateY(-2px); }
+  .contact-bar a:hover { color: var(--gold-light); }
 
   .social-bar { display: flex; gap: 8px; flex-wrap: wrap; z-index: 2; }
 
@@ -328,34 +211,20 @@
     font-size: 11.5px;
     font-weight: 500;
     transition: all 0.3s ease;
-    backdrop-filter: blur(6px);
-  }
-
-  .social-link:hover {
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   }
 
   .social-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-  .social-link.linkedin:hover { background: var(--linkedin); border-color: var(--linkedin); }
-  .social-link.github:hover { background: var(--github); border-color: var(--github); }
-  .social-link.whatsapp:hover { background: var(--whatsapp); border-color: var(--whatsapp); }
 
-  /* BODY LAYOUT */
   .body-content {
     display: grid;
     grid-template-columns: 1fr 1.55fr;
     align-items: stretch;
   }
 
-  /* SIDEBAR */
   .sidebar {
     background: var(--sidebar);
     padding: 26px 22px;
     border-right: 1px solid var(--border);
-    transition: background 0.4s ease;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -376,7 +245,6 @@
     display: inline-block;
   }
 
-  /* Contact list */
   .contact-list { list-style: none; }
 
   .contact-list li {
@@ -387,27 +255,17 @@
     color: var(--text-light);
     margin-bottom: 10px;
     word-break: break-word;
-    transition: transform 0.25s ease;
   }
 
   .contact-list li:last-child { margin-bottom: 0; }
-  .contact-list li:hover { transform: translateX(4px); }
   .contact-list .icon { color: var(--navy-light); font-size: 13px; flex-shrink: 0; margin-top: 2px; }
 
-  /* ✅ QR — WhatsApp official */
   .qr-box {
     background: #ffffff;
     padding: 11px;
     border-radius: 12px;
     border: 2px solid #25d366;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .qr-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(37, 211, 102, 0.3);
   }
 
   .qr-header {
@@ -461,12 +319,8 @@
     padding: 3px 8px;
     background: rgba(37, 211, 102, 0.1);
     border-radius: 10px;
-    transition: background 0.25s ease;
   }
 
-  .qr-link:hover { background: rgba(37, 211, 102, 0.25); }
-
-  /* Language bars */
   .lang-item { margin-bottom: 10px; }
   .lang-item:last-child { margin-bottom: 0; }
   .lang-label { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
@@ -474,12 +328,11 @@
   .lang-fill {
     height: 100%;
     width: 0;
-    background: linear-gradient(90deg, var(--navy), var(--gold));
+    background: var(--navy);
     border-radius: 10px;
     transition: width 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
-  /* Tags */
   .tags { display: flex; flex-wrap: wrap; gap: 5px; }
   .tag {
     background: #ffffff;
@@ -489,21 +342,8 @@
     font-weight: 500;
     padding: 4px 9px;
     border-radius: 20px;
-    cursor: default;
-    transition: all 0.28s ease;
   }
 
-  body.dark .tag { background: #21262d; }
-
-  .tag:hover {
-    background: var(--navy);
-    color: #fff;
-    border-color: var(--navy);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px var(--shadow);
-  }
-
-  /* Technical Skills */
   .tech-skills-list {
     display: flex;
     flex-direction: column;
@@ -515,15 +355,6 @@
     border-radius: 7px;
     padding: 8px 10px;
     border-left: 3px solid var(--gold);
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  body.dark .tech-skill-item { background: #21262d; }
-
-  .tech-skill-item:hover {
-    transform: translateX(4px);
-    border-left-color: var(--navy);
-    box-shadow: 0 6px 15px var(--shadow);
   }
 
   .tech-skill-item strong {
@@ -543,7 +374,6 @@
     display: block;
   }
 
-  /* Education */
   .edu-list {
     display: flex;
     flex-direction: column;
@@ -555,14 +385,6 @@
     border-radius: 7px;
     padding: 8px 10px;
     border-left: 3px solid var(--navy);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  body.dark .edu-side-item { background: #21262d; }
-
-  .edu-side-item:hover {
-    transform: translateX(4px);
-    box-shadow: 0 6px 15px var(--shadow);
   }
 
   .edu-side-item h4 {
@@ -580,24 +402,21 @@
     letter-spacing: 0.3px;
   }
 
-  /* References */
   .ref-item { font-size: 11.5px; margin-bottom: 10px; color: var(--text-light); padding-left: 9px; border-left: 2px solid var(--gold); }
   .ref-item:last-child { margin-bottom: 0; }
   .ref-item strong { color: var(--navy); font-weight: 600; display: block; font-size: 12px; }
   .ref-item .ref-role { font-size: 10.5px; color: var(--muted); }
   .ref-item .ref-phone { font-size: 11px; color: var(--navy-light); font-weight: 500; }
 
-  /* MAIN */
   .main { padding: 26px 30px; }
-  .main .section { margin-bottom: 22px; }
+  .main .section { margin-bottom: 16px; }
   .main .section:last-child { margin-bottom: 0; }
   .main .section-title { display: block; font-size: 14px; margin-bottom: 14px; }
 
   .summary-text { font-size: 12.5px; color: var(--text-light); text-align: justify; line-height: 1.75; }
 
-  /* Experience */
   .exp-item {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     padding-left: 18px;
     border-left: 3px solid var(--gold);
     position: relative;
@@ -627,24 +446,21 @@
   .exp-item ul li:last-child { margin-bottom: 0; }
   .exp-item ul li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
 
-  /* Projects */
   .project-item {
     margin-bottom: 10px;
     padding: 11px 15px;
     background: var(--sidebar);
     border-radius: 9px;
     border-left: 4px solid var(--navy-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
   .project-item:last-child { margin-bottom: 0; }
-  .project-item:hover { transform: translateX(6px); box-shadow: 0 8px 25px var(--shadow); border-left-color: var(--gold); }
   .project-item h4 { font-size: 12.5px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
   .project-item p { font-size: 11.5px; color: var(--text-light); line-height: 1.6; }
 
   .medal {
     display: inline-block;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    background: var(--gold);
     color: #fff;
     font-size: 9px;
     font-weight: 700;
@@ -655,32 +471,26 @@
     letter-spacing: 0.5px;
   }
 
-  /* Achievements */
   .achievements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
   .counter-card {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    background: var(--navy);
     color: #fff;
     border-radius: 12px;
     padding: 15px 10px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 20px rgba(26, 42, 108, 0.2);
   }
 
-  body.dark .counter-card { background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%); box-shadow: 0 8px 20px rgba(88, 166, 255, 0.25); }
   .counter-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 120px; height: 120px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; }
-  .counter-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 15px 30px rgba(26, 42, 108, 0.35); }
   .counter-icon { font-size: 21px; margin-bottom: 4px; position: relative; z-index: 1; }
-  .counter-number { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 3px; color: var(--gold-light); position: relative; z-index: 1; font-family: 'Poppins', sans-serif; }
+  .counter-number { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 3px; color: #ffc93c; position: relative; z-index: 1; font-family: 'Poppins', sans-serif; }
   .counter-label { font-size: 9px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.9; position: relative; z-index: 1; }
 
   .achieve-item { display: flex; gap: 9px; font-size: 12px; color: var(--text-light); margin-bottom: 8px; line-height: 1.55; }
   .achieve-item:last-child { margin-bottom: 0; }
   .achieve-item .icon { color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
 
-  /* Scroll top */
   .scroll-top {
     position: fixed;
     bottom: 25px;
@@ -705,9 +515,7 @@
   }
 
   .scroll-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-  .scroll-top:hover { background: var(--gold); transform: translateY(-4px) scale(1.08); }
 
-  /* Toast */
   .toast {
     position: fixed;
     top: 90px;
@@ -729,9 +537,8 @@
   }
 
   .toast.show { transform: translateX(0); }
-  .toast.error { background: #ef4444; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35); }
+  .toast.error { background: #ef4444; }
 
-  /* PDF Loading */
   .pdf-loading {
     position: fixed;
     inset: 0;
@@ -748,14 +555,13 @@
 
   .pdf-loading.show { display: flex; }
   .spinner { width: 55px; height: 55px; border: 4px solid rgba(255, 255, 255, 0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .pdf-loading p { font-size: 15px; font-weight: 500; letter-spacing: 0.5px; }
 
-  /* RESPONSIVE */
   @media (max-width: 820px) {
     body { padding: 15px 10px; }
-    .controls { top: 12px; right: 12px; max-width: 200px; gap: 7px; }
+    .controls { top: 12px; right: 12px; gap: 7px; }
     .ctrl-btn { width: 40px; height: 40px; font-size: 15px; }
-    .ctrl-btn.lang-btn { padding: 0 12px; }
     .ctrl-btn::after { display: none; }
 
     .header { flex-direction: column; text-align: center; padding: 35px 22px; gap: 20px; }
@@ -767,7 +573,7 @@
     .sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 26px 22px; }
     .main { padding: 26px 22px; }
     .exp-header { flex-direction: column; }
-    .avatar { width: 105px; height: 105px; font-size: 40px; }
+    .avatar { width: 105px; height: 105px; }
 
     .achievements-grid { grid-template-columns: 1fr 1fr; }
     .counter-card:last-child { grid-column: span 2; }
@@ -777,26 +583,11 @@
     .achievements-grid { grid-template-columns: 1fr; }
     .counter-card:last-child { grid-column: span 1; }
   }
-
-  /* PRINT */
-  @media print {
-    body { background: #fff; padding: 0; color: #000; }
-    .controls, .scroll-top, .toast, .pdf-loading, .upload-btn { display: none !important; }
-    .resume { box-shadow: none; border-radius: 0; max-width: 100%; animation: none; }
-    .header { padding: 28px 32px; }
-    .header::before, .header::after, .avatar-wrap::after { display: none; }
-    .header-info h1 span { -webkit-text-fill-color: #ffc93c; background: none; }
-    .lang-fill { width: var(--print-width, 100%) !important; }
-    .project-item:hover, .edu-side-item:hover, .tech-skill-item:hover, .tag:hover, .qr-box:hover, .social-link:hover { transform: none; box-shadow: none; }
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  }
 </style>
 </head>
 <body>
 
 <div class="controls">
-  <button class="ctrl-btn lang-btn" id="langToggle" data-tip="தமிழ் / English">EN</button>
-  <button class="ctrl-btn" id="themeToggle" data-tip="Dark Mode">🌙</button>
   <button class="ctrl-btn" id="pdfBtn" data-tip="Download PDF">💾</button>
   <button class="ctrl-btn" id="printBtn" data-tip="Print">🖨️</button>
 </div>
@@ -817,43 +608,36 @@
 
   <div class="header">
     <div class="avatar-wrap">
-      <div class="avatar" id="avatarBox">
-        <span id="avatarInitials">NV</span>
-        <div class="avatar-overlay">
-          <span class="cam-icon">📸</span>
-          <span data-i18n="uploadPhoto">Upload Photo</span>
-        </div>
+      <div class="avatar">
+        <img src="vithu.jpeg" alt="Nagarassha Vithusan" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:48px;font-weight:800;color:#0f1a45;&quot;>NV</span>';">
       </div>
-      <label class="upload-btn" for="photoInput" title="Upload Photo">📷</label>
-      <input type="file" id="photoInput" accept="image/*">
     </div>
 
     <div class="header-info">
       <h1>Nagarassha <span>Vithusan</span></h1>
-      <!-- ✅ ENHANCED TYPING TITLE -->
       <div class="typed-title">
         <span class="typed-text" id="typedText"></span><span class="cursor"></span>
       </div>
       <div class="contact-bar">
         <a href="tel:+94767875639"><span>📞</span> +94 76 787 5639</a>
         <a href="mailto:nagarasha.vithusasn@gmail.com"><span>✉️</span> nagarasha.vithusasn@gmail.com</a>
-        <a href="#"><span>📍</span> <span data-i18n="location">Jaffna, Sri Lanka</span></a>
+        <a href="#"><span>📍</span> Jaffna, Sri Lanka</a>
       </div>
 
       <div class="social-bar">
-        <a href="https://www.linkedin.com/in/vithusan-nagarasha-98a985348" target="_blank" rel="noopener" class="social-link linkedin">
+        <a href="https://www.linkedin.com/in/vithusan-nagarasha-98a985348" target="_blank" rel="noopener" class="social-link">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
           </svg>
           LinkedIn
         </a>
-        <a href="https://github.com/Vithusan24" target="_blank" rel="noopener" class="social-link github">
+        <a href="https://github.com/Vithusan24" target="_blank" rel="noopener" class="social-link">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
           GitHub
         </a>
-        <a href="https://wa.me/qr/AQYZFFKFUP7ZD1" target="_blank" rel="noopener" class="social-link whatsapp">
+        <a href="https://wa.me/qr/AQYZFFKFUP7ZD1" target="_blank" rel="noopener" class="social-link">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
@@ -865,21 +649,19 @@
 
   <div class="body-content">
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
 
       <div class="section">
-        <div class="section-title" data-i18n="contact">Contact</div>
+        <div class="section-title">Contact</div>
         <ul class="contact-list">
           <li><span class="icon">📞</span> +94 76 787 5639</li>
           <li><span class="icon">✉️</span> nagarasha.vithusasn@gmail.com</li>
-          <li><span class="icon">📍</span> <span data-i18n="address">Navatkadu, Varani, Jaffna, Sri Lanka</span></li>
+          <li><span class="icon">📍</span> Navatkadu, Varani, Jaffna, Sri Lanka</li>
         </ul>
       </div>
 
-      <!-- ✅ WhatsApp official QR -->
       <div class="section">
-        <div class="section-title" data-i18n="scanWhatsapp">Scan WhatsApp</div>
+        <div class="section-title">Scan WhatsApp</div>
         <div class="qr-box">
           <div class="qr-header">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -888,120 +670,118 @@
             WhatsApp
           </div>
           <div id="qrcode"></div>
-          <div class="qr-label" data-i18n="chatOnWhatsapp">Add me as contact</div>
-          <div class="qr-hint" data-i18n="qrHint">Scan with WhatsApp camera</div>
-          <a href="https://wa.me/qr/AQYZFFKFUP7ZD1" target="_blank" rel="noopener" class="qr-link">
-            🔗 Open WhatsApp QR
-          </a>
+          <div class="qr-label">Add me as contact</div>
+          <div class="qr-hint">Scan with WhatsApp camera</div>
+          <a href="https://wa.me/qr/AQYZFFKFUP7ZD1" target="_blank" rel="noopener" class="qr-link">🔗 Open WhatsApp QR</a>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="education">Education</div>
+        <div class="section-title">Education</div>
         <div class="edu-list">
           <div class="edu-side-item">
-            <h4 data-i18n="edu1">NVQ Level 5 — ICT</h4>
+            <h4>NVQ Level 5 — ICT</h4>
             <p>SLGTI</p>
           </div>
           <div class="edu-side-item">
-            <h4 data-i18n="edu2">NVQ Level 4 — ICT Technician</h4>
+            <h4>NVQ Level 4 — ICT Technician</h4>
             <p>VTA</p>
           </div>
           <div class="edu-side-item">
-            <h4 data-i18n="edu3">NVQ Level 3 — Desktop Publishing</h4>
+            <h4>NVQ Level 3 — Desktop Publishing</h4>
             <p>ZEC</p>
           </div>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="languages">Languages</div>
+        <div class="section-title">Languages</div>
         <div class="lang-item">
-          <div class="lang-label"><span data-i18n="tamil">Tamil</span><span data-i18n="native">Native</span></div>
+          <div class="lang-label"><span>Tamil</span><span>Native</span></div>
           <div class="lang-bar"><div class="lang-fill" data-width="100"></div></div>
         </div>
         <div class="lang-item">
-          <div class="lang-label"><span data-i18n="english">English</span><span data-i18n="fluent">Fluent</span></div>
+          <div class="lang-label"><span>English</span><span>Fluent</span></div>
           <div class="lang-bar"><div class="lang-fill" data-width="85"></div></div>
         </div>
         <div class="lang-item">
-          <div class="lang-label"><span data-i18n="sinhala">Sinhala</span><span data-i18n="spoken">Spoken</span></div>
+          <div class="lang-label"><span>Sinhala</span><span>Spoken</span></div>
           <div class="lang-bar"><div class="lang-fill" data-width="55"></div></div>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="expertise">Expertise</div>
+        <div class="section-title">Expertise</div>
         <div class="tags">
-          <span class="tag" data-i18n="management">Management</span>
-          <span class="tag" data-i18n="creativity">Creativity</span>
-          <span class="tag" data-i18n="digitalMarketing">Digital Marketing</span>
-          <span class="tag" data-i18n="negotiation">Negotiation</span>
-          <span class="tag" data-i18n="criticalThinking">Critical Thinking</span>
-          <span class="tag" data-i18n="leadership">Leadership</span>
+          <span class="tag">Management</span>
+          <span class="tag">Creativity</span>
+          <span class="tag">Digital Marketing</span>
+          <span class="tag">Negotiation</span>
+          <span class="tag">Critical Thinking</span>
+          <span class="tag">Leadership</span>
         </div>
       </div>
 
-      <div class="section">
-        <div class="section-title" data-i18n="techSkills">Technical Skills</div>
+      <!-- ⭐ Technical Skills marked for page 2 start -->
+      <div class="section" data-page-break="true" id="technicalSkillsSection">
+        <div class="section-title">Technical Skills</div>
         <div class="tech-skills-list">
           <div class="tech-skill-item">
-            <strong data-i18n="sk1">Programming Languages</strong>
-            <span data-i18n="sk1v">PHP, Java, JavaScript, HTML, CSS</span>
+            <strong>Programming Languages</strong>
+            <span>PHP, Java, JavaScript, HTML, CSS</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk2">Frameworks & Libraries</strong>
-            <span data-i18n="sk2v">Laravel, React.js</span>
+            <strong>Frameworks & Libraries</strong>
+            <span>Laravel, React.js</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk3">Database Management</strong>
-            <span data-i18n="sk3v">MySQL (Advanced), ER Diagram Design</span>
+            <strong>Database Management</strong>
+            <span>MySQL (Advanced), ER Diagram Design</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk4">API Integration</strong>
-            <span data-i18n="sk4v">Google Maps, Open Route Service, WhatsApp API</span>
+            <strong>API Integration</strong>
+            <span>Google Maps, Open Route Service, WhatsApp API</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk5">Version Control</strong>
-            <span data-i18n="sk5v">Git / GitHub</span>
+            <strong>Version Control</strong>
+            <span>Git / GitHub</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk6">UI/UX Tools</strong>
-            <span data-i18n="sk6v">Canva, Photoshop</span>
+            <strong>UI/UX Tools</strong>
+            <span>Canva, Photoshop</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk7">Other Skills</strong>
-            <span data-i18n="sk7v">SEO, Responsive Web Design, RBAC</span>
+            <strong>Other Skills</strong>
+            <span>SEO, Responsive Web Design, RBAC</span>
           </div>
           <div class="tech-skill-item">
-            <strong data-i18n="sk8">Mobile Integration</strong>
-            <span data-i18n="sk8v">WebView App Development</span>
+            <strong>Mobile Integration</strong>
+            <span>WebView App Development</span>
           </div>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="references">References</div>
+        <div class="section-title">References</div>
         <div class="ref-item">
           <strong>S. Sumanan</strong>
-          <span class="ref-role" data-i18n="instructor">Instructor, SLGTI</span><br>
+          <span class="ref-role">Instructor, SLGTI</span><br>
           <span class="ref-phone">+94 770 487 696</span>
         </div>
         <div class="ref-item">
           <strong>Keerthikan</strong>
-          <span class="ref-role" data-i18n="instructor">Instructor, SLGTI</span><br>
+          <span class="ref-role">Instructor, SLGTI</span><br>
           <span class="ref-phone">+94 77 887 0135</span>
         </div>
       </div>
 
     </div>
 
-    <!-- MAIN -->
     <div class="main">
 
       <div class="section">
-        <div class="section-title" data-i18n="summary">Professional Summary</div>
-        <p class="summary-text" data-i18n="summaryText">
+        <div class="section-title">Professional Summary</div>
+        <p class="summary-text">
           Innovative ICT professional and Chief Technology Officer with expertise in full-stack development,
           software architecture, database design, and project implementation. Skilled in PHP, Laravel, React.js,
           and mobile integration, with a proven track record of delivering efficient, user-friendly solutions.
@@ -1012,106 +792,106 @@
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="achievements">Achievements</div>
+        <div class="section-title">Achievements</div>
         <div class="achievements-grid">
           <div class="counter-card">
             <div class="counter-icon">🚀</div>
-            <div class="counter-number" data-target="15">0</div>
-            <div class="counter-label" data-i18n="projectsCompleted">Projects Completed</div>
+            <div class="counter-number" data-target="15">15</div>
+            <div class="counter-label">Projects Completed</div>
           </div>
           <div class="counter-card">
             <div class="counter-icon">🏆</div>
-            <div class="counter-number" data-target="1">0</div>
-            <div class="counter-label" data-i18n="awardsWon">Awards Won</div>
+            <div class="counter-number" data-target="1">1</div>
+            <div class="counter-label">Awards Won</div>
           </div>
           <div class="counter-card">
             <div class="counter-icon">💼</div>
-            <div class="counter-number" data-target="2" data-suffix="+">0</div>
-            <div class="counter-label" data-i18n="yearsExp">Years Experience</div>
+            <div class="counter-number" data-target="2" data-suffix="+">2+</div>
+            <div class="counter-label">Years Experience</div>
           </div>
         </div>
 
         <div class="achieve-item">
           <span class="icon">🏆</span>
-          <span data-i18n="achieve1"><strong>Bronze Medal</strong> — World Youth Skills Innovation Competition — Paddy Disease Detection Project</span>
+          <span><strong>Bronze Medal</strong> — World Youth Skills Innovation Competition — Paddy Disease Detection Project</span>
         </div>
         <div class="achieve-item">
           <span class="icon">✅</span>
-          <span data-i18n="achieve2">Successfully integrated live tracking and real-time notifications in web-based systems</span>
+          <span>Successfully integrated live tracking and real-time notifications in web-based systems</span>
         </div>
         <div class="achieve-item">
           <span class="icon">✅</span>
-          <span data-i18n="achieve3">Developed multiple full-stack applications with API integrations</span>
+          <span>Developed multiple full-stack applications with API integrations</span>
         </div>
       </div>
 
       <div class="section">
-        <div class="section-title" data-i18n="experience">Professional Experience</div>
+        <div class="section-title">Professional Experience</div>
 
         <div class="exp-item">
           <div class="exp-header">
-            <h3 data-i18n="job1Title">Chief Technology Officer (CTO)</h3>
-            <span class="exp-date" data-i18n="job1Date">Jan 2026 – Present</span>
+            <h3>Chief Technology Officer (CTO)</h3>
+            <span class="exp-date">Jan 2026 – Present</span>
           </div>
-          <div class="exp-company" data-i18n="job1Company">Ellsiax Technology Pvt Ltd</div>
+          <div class="exp-company">Ellsiax Technology Pvt Ltd</div>
           <ul>
-            <li data-i18n="job1L1">Lead software architecture and system development for client projects</li>
-            <li data-i18n="job1L2">Oversee full-stack web application development using PHP, Laravel, React.js, and MySQL</li>
-            <li data-i18n="job1L3">Design and implement API development and third-party integrations</li>
-            <li data-i18n="job1L4">Manage hosting, domain configuration, and deployment processes</li>
-            <li data-i18n="job1L5">Optimize database design and performance for scalable systems</li>
-            <li data-i18n="job1L6">Coordinate team members and manage project timelines and deliverables</li>
-            <li data-i18n="job1L7">Implement SEO strategies and digital solutions for clients</li>
-            <li data-i18n="job1L8">Develop and maintain client projects with ongoing technical support</li>
-            <li data-i18n="job1L9">Build admin/user role-based access control systems</li>
-            <li data-i18n="job1L10">Integrate mobile/WebView applications with web platforms</li>
+            <li>Lead software architecture and system development for client projects</li>
+            <li>Oversee full-stack web application development using PHP, Laravel, React.js, and MySQL</li>
+            <li>Design and implement API development and third-party integrations</li>
+            <li>Manage hosting, domain configuration, and deployment processes</li>
+            <li>Optimize database design and performance for scalable systems</li>
+            <li>Coordinate team members and manage project timelines and deliverables</li>
+            <li>Implement SEO strategies and digital solutions for clients</li>
+            <li>Develop and maintain client projects with ongoing technical support</li>
+            <li>Build admin/user role-based access control systems</li>
+            <li>Integrate mobile/WebView applications with web platforms</li>
           </ul>
         </div>
 
         <div class="exp-item">
           <div class="exp-header">
-            <h3 data-i18n="job2Title">Software Developer Intern</h3>
-            <span class="exp-date" data-i18n="job2Date">Recent</span>
+            <h3>Software Developer Intern</h3>
+            <span class="exp-date">Recent</span>
           </div>
-          <div class="exp-company" data-i18n="job2Company">WebBuilders.lk — Jaffna</div>
+          <div class="exp-company">WebBuilders.lk — Jaffna</div>
           <ul>
-            <li data-i18n="job2L1">Developed Matrimonial and Taxi Management websites using web builders</li>
-            <li data-i18n="job2L2">Customized layouts and designed responsive front-end interfaces</li>
-            <li data-i18n="job2L3">Ensured smooth user experience across devices</li>
+            <li>Developed Matrimonial and Taxi Management websites using web builders</li>
+            <li>Customized layouts and designed responsive front-end interfaces</li>
+            <li>Ensured smooth user experience across devices</li>
           </ul>
         </div>
       </div>
 
-      <div class="section">
-        <div class="section-title" data-i18n="keyProjects">Key Projects</div>
+      <div class="section" id="keyProjectsSection">
+        <div class="section-title">Key Projects</div>
 
         <div class="project-item">
-          <h4 data-i18n="p1">Matrimonial Management System</h4>
-          <p data-i18n="p1d">Developed a full-stack matrimonial web application with member registration, profile management, search, matching, verification, document handling, and role-based administration.</p>
+          <h4>Matrimonial Management System</h4>
+          <p>Developed a full-stack matrimonial web application with member registration, profile management, search, matching, verification, document handling, and role-based administration.</p>
         </div>
         <div class="project-item">
-          <h4 data-i18n="p2">Electrical Business Website</h4>
-          <p data-i18n="p2d">Designed and developed a responsive business website for an electrical services company, including service presentation, product information, contact features, and mobile-friendly UI.</p>
+          <h4>Electrical Business Website</h4>
+          <p>Designed and developed a responsive business website for an electrical services company, including service presentation, product information, contact features, and mobile-friendly UI.</p>
         </div>
         <div class="project-item">
-          <h4 data-i18n="p3">Hotel Management System</h4>
-          <p data-i18n="p3d">Developed a web-based hotel management solution with room management, booking functionality, customer management, administrative controls, and database integration.</p>
+          <h4>Hotel Management System</h4>
+          <p>Developed a web-based hotel management solution with room management, booking functionality, customer management, administrative controls, and database integration.</p>
         </div>
         <div class="project-item">
-          <h4 data-i18n="p4">Taxi Booking & Management System</h4>
-          <p data-i18n="p4d">Developed a web-based taxi management system with booking, fare calculation, driver assignment, commission management, driver payments, role-based access, and GPS-related functionality.</p>
+          <h4>Taxi Booking & Management System</h4>
+          <p>Developed a web-based taxi management system with booking, fare calculation, driver assignment, commission management, driver payments, role-based access, and GPS-related functionality.</p>
         </div>
         <div class="project-item">
-          <h4 data-i18n="p5">Inventory Management System</h4>
-          <p data-i18n="p5d">Developed an inventory management system with stock management, user roles, alerts, product tracking, and reporting features.</p>
+          <h4>Inventory Management System</h4>
+          <p>Developed an inventory management system with stock management, user roles, alerts, product tracking, and reporting features.</p>
         </div>
         <div class="project-item">
-          <h4><span data-i18n="p6">Paddy Disease Detection Application</span> <span class="medal">🥉 BRONZE</span></h4>
-          <p data-i18n="p6d">Developed a Java-based image recognition application for detecting paddy diseases. The project received a Bronze Medal at the World Youth Skills Innovation Competition.</p>
+          <h4>Paddy Disease Detection Application <span class="medal">🥉 BRONZE</span></h4>
+          <p>Developed a Java-based image recognition application for detecting paddy diseases. The project received a Bronze Medal at the World Youth Skills Innovation Competition.</p>
         </div>
         <div class="project-item">
-          <h4 data-i18n="p7">Multiple Full-Stack Web Applications</h4>
-          <p data-i18n="p7d">Designed and implemented multiple web-based systems using PHP, Laravel, React.js, MySQL, JavaScript, HTML, CSS, and third-party API integrations, covering business management, e-commerce, service management, and administrative workflows.</p>
+          <h4>Multiple Full-Stack Web Applications</h4>
+          <p>Designed and implemented multiple web-based systems using PHP, Laravel, React.js, MySQL, JavaScript, HTML, CSS, and third-party API integrations, covering business management, e-commerce, service management, and administrative workflows.</p>
         </div>
       </div>
 
@@ -1123,59 +903,26 @@
 (function () {
   'use strict';
 
-  /* COUNTERS */
-  function animateCounter(el) {
-    if (el.dataset.animated === 'true') return;
-    el.dataset.animated = 'true';
-    const target = parseInt(el.getAttribute('data-target'), 10);
-    const suffix = el.getAttribute('data-suffix') || '';
-    const duration = 1500;
-    const startTime = performance.now();
-    function step(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(eased * target) + suffix;
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = target + suffix;
-    }
-    requestAnimationFrame(step);
-  }
-  function startCounters() {
-    document.querySelectorAll('.counter-number').forEach(animateCounter);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startCounters);
-  else startCounters();
-  setTimeout(startCounters, 100);
-  setTimeout(startCounters, 1000);
-
   /* LANGUAGE BARS */
   function animateLangBars() {
     document.querySelectorAll('.lang-fill').forEach((el) => {
       const width = el.getAttribute('data-width') || 100;
-      el.style.setProperty('--print-width', width + '%');
       el.style.width = width + '%';
     });
   }
   setTimeout(animateLangBars, 200);
   window.addEventListener('load', animateLangBars);
 
-  /* ✅ WHATSAPP OFFICIAL QR — uses provided link */
+  /* WHATSAPP QR */
   function generateQR() {
     const qrContainer = document.getElementById('qrcode');
     if (!qrContainer || qrContainer.dataset.done === 'true') return;
     qrContainer.innerHTML = '';
-
-    // ✅ Official WhatsApp QR link you provided
     const waURL = 'https://wa.me/qr/AQYZFFKFUP7ZD1';
-
     if (typeof QRCode !== 'undefined') {
       new QRCode(qrContainer, {
-        text: waURL,
-        width: 120,
-        height: 120,
-        colorDark: '#128c7e',
-        colorLight: '#ffffff',
+        text: waURL, width: 120, height: 120,
+        colorDark: '#128c7e', colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.M
       });
       qrContainer.dataset.done = 'true';
@@ -1191,325 +938,203 @@
   else window.addEventListener('load', generateQR);
   setTimeout(generateQR, 500);
 
-  /* TRANSLATIONS */
-  const translations = {
-    en: {
-      uploadPhoto: 'Upload Photo', location: 'Jaffna, Sri Lanka', contact: 'Contact',
-      scanWhatsapp: 'Scan WhatsApp', chatOnWhatsapp: 'Add me as contact',
-      qrHint: 'Scan with WhatsApp camera',
-      languages: 'Languages', tamil: 'Tamil', english: 'English', sinhala: 'Sinhala',
-      native: 'Native', fluent: 'Fluent', spoken: 'Spoken',
-      expertise: 'Expertise', management: 'Management', creativity: 'Creativity',
-      digitalMarketing: 'Digital Marketing', negotiation: 'Negotiation',
-      criticalThinking: 'Critical Thinking', leadership: 'Leadership',
-      references: 'References', instructor: 'Instructor, SLGTI',
-      summary: 'Professional Summary',
-      summaryText: 'Innovative ICT professional and Chief Technology Officer with expertise in full-stack development, software architecture, database design, and project implementation. Skilled in PHP, Laravel, React.js, and mobile integration, with a proven track record of delivering efficient, user-friendly solutions. Experienced in leading technical projects, managing teams, and driving organizational growth through technology. Seeking to apply technical skills and problem-solving abilities to support business objectives and innovation.',
-      achievements: 'Achievements',
-      projectsCompleted: 'Projects Completed', awardsWon: 'Awards Won', yearsExp: 'Years Experience',
-      achieve1: '<strong>Bronze Medal</strong> — World Youth Skills Innovation Competition — Paddy Disease Detection Project',
-      achieve2: 'Successfully integrated live tracking and real-time notifications in web-based systems',
-      achieve3: 'Developed multiple full-stack applications with API integrations',
-      experience: 'Professional Experience',
-      job1Title: 'Chief Technology Officer (CTO)', job1Date: 'Jan 2026 – Present',
-      job1Company: 'Ellsiax Technology Pvt Ltd',
-      job1L1: 'Lead software architecture and system development for client projects',
-      job1L2: 'Oversee full-stack web application development using PHP, Laravel, React.js, and MySQL',
-      job1L3: 'Design and implement API development and third-party integrations',
-      job1L4: 'Manage hosting, domain configuration, and deployment processes',
-      job1L5: 'Optimize database design and performance for scalable systems',
-      job1L6: 'Coordinate team members and manage project timelines and deliverables',
-      job1L7: 'Implement SEO strategies and digital solutions for clients',
-      job1L8: 'Develop and maintain client projects with ongoing technical support',
-      job1L9: 'Build admin/user role-based access control systems',
-      job1L10: 'Integrate mobile/WebView applications with web platforms',
-      job2Title: 'Software Developer Intern', job2Date: 'Recent',
-      job2Company: 'WebBuilders.lk — Jaffna',
-      job2L1: 'Developed Matrimonial and Taxi Management websites using web builders',
-      job2L2: 'Customized layouts and designed responsive front-end interfaces',
-      job2L3: 'Ensured smooth user experience across devices',
-      education: 'Education',
-      edu1: 'NVQ Level 5 — ICT',
-      edu2: 'NVQ Level 4 — ICT Technician',
-      edu3: 'NVQ Level 3 — Desktop Publishing',
-      techSkills: 'Technical Skills',
-      sk1: 'Programming Languages', sk1v: 'PHP, Java, JavaScript, HTML, CSS',
-      sk2: 'Frameworks & Libraries', sk2v: 'Laravel, React.js',
-      sk3: 'Database Management', sk3v: 'MySQL (Advanced), ER Diagram Design',
-      sk4: 'API Integration', sk4v: 'Google Maps, Open Route Service, WhatsApp API',
-      sk5: 'Version Control', sk5v: 'Git / GitHub',
-      sk6: 'UI/UX Tools', sk6v: 'Canva, Photoshop',
-      sk7: 'Other Skills', sk7v: 'SEO, Responsive Web Design, RBAC',
-      sk8: 'Mobile Integration', sk8v: 'WebView App Development',
-      keyProjects: 'Key Projects',
-      p1: 'Matrimonial Management System',
-      p1d: 'Developed a full-stack matrimonial web application with member registration, profile management, search, matching, verification, document handling, and role-based administration.',
-      p2: 'Electrical Business Website',
-      p2d: 'Designed and developed a responsive business website for an electrical services company, including service presentation, product information, contact features, and mobile-friendly UI.',
-      p3: 'Hotel Management System',
-      p3d: 'Developed a web-based hotel management solution with room management, booking functionality, customer management, administrative controls, and database integration.',
-      p4: 'Taxi Booking & Management System',
-      p4d: 'Developed a web-based taxi management system with booking, fare calculation, driver assignment, commission management, driver payments, role-based access, and GPS-related functionality.',
-      p5: 'Inventory Management System',
-      p5d: 'Developed an inventory management system with stock management, user roles, alerts, product tracking, and reporting features.',
-      p6: 'Paddy Disease Detection Application',
-      p6d: 'Developed a Java-based image recognition application for detecting paddy diseases. The project received a Bronze Medal at the World Youth Skills Innovation Competition.',
-      p7: 'Multiple Full-Stack Web Applications',
-      p7d: 'Designed and implemented multiple web-based systems using PHP, Laravel, React.js, MySQL, JavaScript, HTML, CSS, and third-party API integrations, covering business management, e-commerce, service management, and administrative workflows.',
-      pdfGenerating: 'Generating PDF... Please wait',
-      photoUploaded: 'Photo uploaded successfully!',
-      photoError: 'Please select a valid image file!',
-      pdfSuccess: 'PDF downloaded successfully!',
-      pdfError: 'PDF generation failed. Try again.',
-      address: 'Navatkadu, Varani, Jaffna, Sri Lanka'
-    },
-    ta: {
-      uploadPhoto: 'புகைப்படம் பதிவேற்று', location: 'யாழ்ப்பாணம், இலங்கை', contact: 'தொடர்பு',
-      scanWhatsapp: 'WhatsApp ஸ்கேன்', chatOnWhatsapp: 'தொடர்பாக சேர்க்கவும்',
-      qrHint: 'WhatsApp கேமராவால் ஸ்கேன் செய்யுங்கள்',
-      languages: 'மொழிகள்', tamil: 'தமிழ்', english: 'ஆங்கிலம்', sinhala: 'சிங்களம்',
-      native: 'தாய்மொழி', fluent: 'சரளமாக', spoken: 'பேசுவார்',
-      expertise: 'திறமைகள்', management: 'மேலாண்மை', creativity: 'படைப்பாற்றல்',
-      digitalMarketing: 'டிஜிட்டல் மார்க்கெட்டிங்', negotiation: 'பேச்சுவார்த்தை',
-      criticalThinking: 'விமர்சன சிந்தனை', leadership: 'தலைமைத்துவம்',
-      references: 'பரிந்துரைகள்', instructor: 'பயிற்றுநர், SLGTI',
-      summary: 'தொழில் சுருக்கம்',
-      summaryText: 'முழு-ஸ்டாக் மேம்பாடு, மென்பொருள் கட்டமைப்பு, தரவுத்தள வடிவமைப்பு மற்றும் திட்ட செயலாக்கத்தில் நிபுணத்துவம் பெற்ற புதுமையான ICT நிபுணர் மற்றும் தலைமை தொழில்நுட்ப அதிகாரி. PHP, Laravel, React.js மற்றும் மொபைல் ஒருங்கிணைப்பில் திறமையானவர், திறமையான, பயனர்-நட்பு தீர்வுகளை வழங்குவதில் நிரூபிக்கப்பட்ட பதிவு. தொழில்நுட்ப திட்டங்களை வழிநடத்துதல், குழுக்களை நிர்வகித்தல் மற்றும் தொழில்நுட்பத்தின் மூலம் நிறுவன வளர்ச்சியை இயக்குதல் ஆகியவற்றில் அனுபவம்.',
-      achievements: 'சாதனைகள்',
-      projectsCompleted: 'முடிக்கப்பட்ட திட்டங்கள்', awardsWon: 'வென்ற விருதுகள்', yearsExp: 'ஆண்டுகள் அனுபவம்',
-      achieve1: '<strong>வெண்கல பதக்கம்</strong> — உலக இளைஞர் திறன் புதுமை போட்டி — நெல் நோய் கண்டறிதல் திட்டம்',
-      achieve2: 'வலை அடிப்படையிலான அமைப்புகளில் நேரடி கண்காணிப்பு மற்றும் நிகழ்நேர அறிவிப்புகளை வெற்றிகரமாக ஒருங்கிணைத்துள்ளேன்',
-      achieve3: 'API ஒருங்கிணைப்புகளுடன் பல முழு-ஸ்டாக் பயன்பாடுகளை உருவாக்கியுள்ளேன்',
-      experience: 'தொழில் அனுபவம்',
-      job1Title: 'தலைமை தொழில்நுட்ப அதிகாரி (CTO)', job1Date: 'ஜன 2026 – இன்று வரை',
-      job1Company: 'Ellsiax Technology Pvt Ltd',
-      job1L1: 'வாடிக்கையாளர் திட்டங்களுக்கான மென்பொருள் கட்டமைப்பு மற்றும் கணினி மேம்பாட்டை வழிநடத்துகிறேன்',
-      job1L2: 'PHP, Laravel, React.js மற்றும் MySQL பயன்படுத்தி முழு-ஸ்டாக் வலை பயன்பாட்டு மேம்பாட்டை மேற்பார்வையிடுகிறேன்',
-      job1L3: 'API மேம்பாடு மற்றும் மூன்றாம் தரப்பு ஒருங்கிணைப்புகளை வடிவமைத்து செயல்படுத்துகிறேன்',
-      job1L4: 'ஹோஸ்டிங், டொமைன் உள்ளமைவு மற்றும் வரிசைப்படுத்தல் செயல்முறைகளை நிர்வகிக்கிறேன்',
-      job1L5: 'அளவிடக்கூடிய அமைப்புகளுக்கான தரவுத்தள வடிவமைப்பு மற்றும் செயல்திறனை மேம்படுத்துகிறேன்',
-      job1L6: 'குழு உறுப்பினர்களை ஒருங்கிணைத்து திட்ட காலக்கெடு மற்றும் விநியோகங்களை நிர்வகிக்கிறேன்',
-      job1L7: 'வாடிக்கையாளர்களுக்கான SEO உத்திகள் மற்றும் டிஜிட்டல் தீர்வுகளை செயல்படுத்துகிறேன்',
-      job1L8: 'தொடர்ச்சியான தொழில்நுட்ப ஆதரவுடன் வாடிக்கையாளர் திட்டங்களை உருவாக்கி பராமரிக்கிறேன்',
-      job1L9: 'நிர்வாகி/பயனர் பங்கு அடிப்படையிலான அணுகல் கட்டுப்பாட்டு அமைப்புகளை உருவாக்குகிறேன்',
-      job1L10: 'மொபைல்/WebView பயன்பாடுகளை வலை தளங்களுடன் ஒருங்கிணைக்கிறேன்',
-      job2Title: 'மென்பொருள் டெவலப்பர் பயிற்சியாளர்', job2Date: 'சமீபத்திய',
-      job2Company: 'WebBuilders.lk — யாழ்ப்பாணம்',
-      job2L1: 'வலை உருவாக்கிகள் பயன்படுத்தி திருமண மற்றும் டாக்ஸி மேலாண்மை வலைத்தளங்களை உருவாக்கியுள்ளேன்',
-      job2L2: 'தளவமைப்புகளை தனிப்பயனாக்கி, பதிலளிக்கக்கூடிய முன்-இறுதி இடைமுகங்களை வடிவமைத்துள்ளேன்',
-      job2L3: 'சாதனங்கள் முழுவதும் மென்மையான பயனர் அனுபவத்தை உறுதி செய்துள்ளேன்',
-      education: 'கல்வி',
-      edu1: 'NVQ நிலை 5 — ICT',
-      edu2: 'NVQ நிலை 4 — ICT தொழில்நுட்ப நிபுணர்',
-      edu3: 'NVQ நிலை 3 — டெஸ்க்டாப் பப்ளிஷிங்',
-      techSkills: 'தொழில்நுட்ப திறன்கள்',
-      sk1: 'நிரலாக்க மொழிகள்', sk1v: 'PHP, Java, JavaScript, HTML, CSS',
-      sk2: 'கட்டமைப்புகள் & நூலகங்கள்', sk2v: 'Laravel, React.js',
-      sk3: 'தரவுத்தள மேலாண்மை', sk3v: 'MySQL (மேம்பட்ட), ER வரைபட வடிவமைப்பு',
-      sk4: 'API ஒருங்கிணைப்பு', sk4v: 'Google Maps, Open Route Service, WhatsApp API',
-      sk5: 'பதிப்பு கட்டுப்பாடு', sk5v: 'Git / GitHub',
-      sk6: 'UI/UX கருவிகள்', sk6v: 'Canva, Photoshop',
-      sk7: 'இதர திறன்கள்', sk7v: 'SEO, பதிலளிக்கக்கூடிய வலை வடிவமைப்பு, RBAC',
-      sk8: 'மொபைல் ஒருங்கிணைப்பு', sk8v: 'WebView ஆப் மேம்பாடு',
-      keyProjects: 'முக்கிய திட்டங்கள்',
-      p1: 'திருமண மேலாண்மை அமைப்பு',
-      p1d: 'உறுப்பினர் பதிவு, சுயவிவர மேலாண்மை, தேடல், பொருத்தம், சரிபார்ப்பு, ஆவண கையாளுதல் மற்றும் பங்கு அடிப்படையிலான நிர்வாகத்துடன் முழு-ஸ்டாக் திருமண வலை பயன்பாட்டை உருவாக்கியுள்ளேன்.',
-      p2: 'மின் வணிக வலைத்தளம்',
-      p2d: 'மின் சேவை நிறுவனத்திற்கான பதிலளிக்கக்கூடிய வணிக வலைத்தளத்தை வடிவமைத்து உருவாக்கியுள்ளேன்.',
-      p3: 'ஹோட்டல் மேலாண்மை அமைப்பு',
-      p3d: 'அறை மேலாண்மை, முன்பதிவு செயல்பாடு, வாடிக்கையாளர் மேலாண்மை மற்றும் தரவுத்தள ஒருங்கிணைப்புடன் வலை அடிப்படையிலான ஹோட்டல் மேலாண்மை தீர்வை உருவாக்கியுள்ளேன்.',
-      p4: 'டாக்ஸி முன்பதிவு & மேலாண்மை அமைப்பு',
-      p4d: 'முன்பதிவு, கட்டண கணக்கீடு, ஓட்டுநர் ஒதுக்கீடு, கமிஷன் மேலாண்மை மற்றும் GPS செயல்பாடுகளுடன் வலை அடிப்படையிலான டாக்ஸி மேலாண்மை அமைப்பை உருவாக்கியுள்ளேன்.',
-      p5: 'சரக்கு மேலாண்மை அமைப்பு',
-      p5d: 'சரக்கு மேலாண்மை, பயனர் பங்குகள், எச்சரிக்கைகள், தயாரிப்பு கண்காணிப்பு மற்றும் அறிக்கை அம்சங்களுடன் சரக்கு மேலாண்மை அமைப்பை உருவாக்கியுள்ளேன்.',
-      p6: 'நெல் நோய் கண்டறிதல் பயன்பாடு',
-      p6d: 'நெல் நோய்களைக் கண்டறிய Java அடிப்படையிலான பட அங்கீகார பயன்பாட்டை உருவாக்கியுள்ளேன். இந்த திட்டம் உலக இளைஞர் திறன் புதுமை போட்டியில் வெண்கல பதக்கம் பெற்றது.',
-      p7: 'பல முழு-ஸ்டாக் வலை பயன்பாடுகள்',
-      p7d: 'PHP, Laravel, React.js, MySQL, JavaScript, HTML, CSS மற்றும் மூன்றாம் தரப்பு API ஒருங்கிணைப்புகளைப் பயன்படுத்தி பல வலை அடிப்படையிலான அமைப்புகளை வடிவமைத்து செயல்படுத்தியுள்ளேன்.',
-      pdfGenerating: 'PDF உருவாக்கப்படுகிறது... காத்திருங்கள்',
-      photoUploaded: 'புகைப்படம் வெற்றிகரமாக பதிவேற்றப்பட்டது!',
-      photoError: 'சரியான படக் கோப்பைத் தேர்ந்தெடுக்கவும்!',
-      pdfSuccess: 'PDF வெற்றிகரமாக பதிவிறக்கம் செய்யப்பட்டது!',
-      pdfError: 'PDF உருவாக்கம் தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.',
-      address: 'நாவற்காடு, வரணி, யாழ்ப்பாணம், இலங்கை'
-    }
-  };
-
-  const langBtn = document.getElementById('langToggle');
-  const body = document.body;
-  let currentLang = localStorage.getItem('resume-lang') || 'en';
-
-  function applyLanguage(lang) {
-    currentLang = lang;
-    document.documentElement.lang = lang;
-    body.classList.toggle('lang-ta', lang === 'ta');
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
-      const key = el.getAttribute('data-i18n');
-      if (translations[lang][key]) el.innerHTML = translations[lang][key];
-    });
-    langBtn.textContent = lang === 'en' ? 'EN' : 'த';
-    localStorage.setItem('resume-lang', lang);
-    if (typeof restartTyping === 'function') restartTyping();
-  }
-
-  langBtn.addEventListener('click', () => {
-    applyLanguage(currentLang === 'en' ? 'ta' : 'en');
-    showToast(currentLang === 'en' ? 'Language: English' : 'மொழி: தமிழ்', '🌐');
-  });
-
-  /* ============================================
-     ✅ ENHANCED TYPING EFFECT
-     Multiple roles: Software Developer, Software Designer,
-     Full-Stack Developer, Software Architect, React.js Expert
-  ============================================ */
+  /* TYPING */
   const typedEl = document.getElementById('typedText');
   let titleIndex = 0, charIndex = 0, isDeleting = false;
   let typingTimeout = null;
 
-  function getTitles() {
-    if (currentLang === 'ta') {
-      return [
-        'மென்பொருள் டெவலப்பர்',
-        'மென்பொருள் வடிவமைப்பாளர்',
-        'முழு-ஸ்டாக் டெவலப்பர்',
-        'மென்பொருள் கட்டமைப்பாளர்',
-        'தலைமை தொழில்நுட்ப அதிகாரி',
-        'React.js நிபுணர்',
-        'Laravel நிபுணர்'
-      ];
-    }
-    return [
-      'Software Developer',
-      'Software Designer',
-      'Full-Stack Developer',
-      'Software Architect',
-      'Chief Technology Officer',
-      'React.js Expert',
-      'Laravel Expert'
-    ];
-  }
+  const titles = [
+    'Software Developer',
+    'Software Designer',
+    'Full-Stack Developer',
+    'Software Architect',
+    'Chief Technology Officer',
+    'React.js Expert',
+    'Laravel Expert'
+  ];
 
   function typeLoop() {
-    const titles = getTitles();
     const currentTitle = titles[titleIndex % titles.length];
-
     if (!isDeleting) {
-      // ✅ TYPE — letter by letter
       typedEl.textContent = currentTitle.substring(0, charIndex + 1);
       charIndex++;
-
       if (charIndex === currentTitle.length) {
-        // ✅ Finished typing → WAIT → start deleting
         isDeleting = true;
-        typingTimeout = setTimeout(typeLoop, 1800); // 1.8s pause
+        typingTimeout = setTimeout(typeLoop, 1800);
         return;
       }
-      typingTimeout = setTimeout(typeLoop, 85); // typing speed
+      typingTimeout = setTimeout(typeLoop, 85);
     } else {
-      // ✅ DELETE — letter by letter
       typedEl.textContent = currentTitle.substring(0, charIndex - 1);
       charIndex--;
-
       if (charIndex === 0) {
-        // ✅ Finished deleting → MOVE to next role
         isDeleting = false;
         titleIndex = (titleIndex + 1) % titles.length;
-        typingTimeout = setTimeout(typeLoop, 400); // pause before next
+        typingTimeout = setTimeout(typeLoop, 400);
         return;
       }
-      typingTimeout = setTimeout(typeLoop, 45); // delete speed
+      typingTimeout = setTimeout(typeLoop, 45);
     }
-  }
-
-  function restartTyping() {
-    clearTimeout(typingTimeout);
-    titleIndex = 0;
-    charIndex = 0;
-    isDeleting = false;
-    typedEl.textContent = '';
-    typeLoop();
   }
   setTimeout(typeLoop, 600);
 
-  /* PHOTO */
-  const photoInput = document.getElementById('photoInput');
-  const avatarBox = document.getElementById('avatarBox');
-  const avatarInitials = document.getElementById('avatarInitials');
-  const savedPhoto = localStorage.getItem('resume-photo');
-  if (savedPhoto) displayPhoto(savedPhoto);
-
-  function displayPhoto(dataURL) {
-    let img = avatarBox.querySelector('img');
-    if (!img) {
-      img = document.createElement('img');
-      avatarBox.insertBefore(img, avatarBox.firstChild);
-    }
-    img.src = dataURL;
-    avatarInitials.style.display = 'none';
-  }
-
-  photoInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/')) { showToast(translations[currentLang].photoError, '❌', true); return; }
-    if (file.size > 5 * 1024 * 1024) { showToast('Image too large (max 5MB)', '❌', true); return; }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        localStorage.setItem('resume-photo', ev.target.result);
-        displayPhoto(ev.target.result);
-        showToast(translations[currentLang].photoUploaded, '✅');
-      } catch (err) { showToast('Storage full! Photo too large.', '❌', true); }
-    };
-    reader.readAsDataURL(file);
-  });
-
-  /* DARK MODE */
-  const themeToggle = document.getElementById('themeToggle');
-  const savedTheme = localStorage.getItem('resume-theme');
-  if (savedTheme === 'dark') { body.classList.add('dark'); themeToggle.textContent = '☀️'; }
-  themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark');
-    themeToggle.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
-    localStorage.setItem('resume-theme', body.classList.contains('dark') ? 'dark' : 'light');
-  });
-
-  /* PDF */
+  /* ============================================
+     ✅ FORCED 2-PAGE PDF
+     Page 2 ALWAYS starts at "Technical Skills"
+     Both "Technical Skills" + "Key Projects"
+     headings will be at TOP of Page 2
+  ============================================ */
   const pdfBtn = document.getElementById('pdfBtn');
   const pdfLoading = document.getElementById('pdfLoading');
-  pdfBtn.addEventListener('click', () => {
+  const { jsPDF } = window.jspdf;
+
+  pdfBtn.addEventListener('click', async () => {
     const element = document.getElementById('resume');
-    pdfLoading.querySelector('p').textContent = translations[currentLang].pdfGenerating;
+    pdfLoading.querySelector('p').textContent = 'Generating PDF... Please wait';
     pdfLoading.classList.add('show');
-    animateLangBars();
+
     document.querySelectorAll('.counter-number').forEach((el) => {
       el.textContent = parseInt(el.getAttribute('data-target'), 10) + (el.getAttribute('data-suffix') || '');
     });
-    const options = {
-      margin: [0, 0, 0, 0], filename: 'Nagarassha_Vithusan_Resume.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0,
-        backgroundColor: body.classList.contains('dark') ? '#161b22' : '#ffffff' },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-    setTimeout(() => {
-      html2pdf().set(options).from(element).save()
-        .then(() => { pdfLoading.classList.remove('show'); showToast(translations[currentLang].pdfSuccess, '💾'); })
-        .catch((err) => { console.error('PDF Error:', err); pdfLoading.classList.remove('show'); showToast(translations[currentLang].pdfError, '❌', true); });
-    }, 500);
+    animateLangBars();
+
+    if (typingTimeout) clearTimeout(typingTimeout);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // ── Capture full resume
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        letterRendering: true,
+        scrollX: 0,
+        scrollY: 0,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        backgroundColor: '#ffffff',
+        logging: false,
+        imageTimeout: 15000
+      });
+
+      // ── Find exact positions of section headings
+      const resumeRect = element.getBoundingClientRect();
+      const scaleFactor = 2; // html2canvas scale
+
+      // ⭐ Find "Technical Skills" heading position (in canvas coords)
+      const techSkillsSection = element.querySelector('#technicalSkillsSection');
+      const techSkillsRect = techSkillsSection.getBoundingClientRect();
+      const techSkillsY = (techSkillsRect.top - resumeRect.top) * scaleFactor;
+
+      // ── A4 PDF setup
+      const pdf = new jsPDF({
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait',
+        compress: true
+      });
+
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+
+      const imgRatio = canvas.width / canvas.height;
+      const scaledWidth = pdfWidth;
+      const fullScaledHeight = scaledWidth / imgRatio;
+
+      // Convert PDF height → canvas pixels
+      const canvasToPdf = fullScaledHeight / canvas.height;
+      const pageHeightInCanvas = pdfHeight / canvasToPdf;
+
+      // ⭐ Determine page break
+      // Page 2 starts exactly at "Technical Skills" heading
+      // But if Technical Skills is way too far, split at natural section break
+
+      let pageBreakY;
+
+      if (techSkillsY < pageHeightInCanvas) {
+        // Technical Skills is already within page 1 height
+        // → Break at Key Projects instead
+        const keyProjRect = document.querySelector('#keyProjectsSection').getBoundingClientRect();
+        pageBreakY = (keyProjRect.top - resumeRect.top) * scaleFactor - 20;
+      } else {
+        // Technical Skills is beyond page 1 → use it as break
+        pageBreakY = techSkillsY - 20; // 20px buffer
+      }
+
+      // ⭐ Ensure break point is within valid range
+      pageBreakY = Math.max(pageHeightInCanvas * 0.7, Math.min(pageBreakY, canvas.height - 100));
+
+      console.log('Page break at canvas Y:', pageBreakY);
+      console.log('Page 1 height (canvas):', pageHeightInCanvas);
+      console.log('Total canvas height:', canvas.height);
+
+      // ⭐ Slice into pages at this break point
+      const breakPoints = [0, pageBreakY, canvas.height];
+
+      for (let i = 0; i < breakPoints.length - 1; i++) {
+        if (i > 0) pdf.addPage();
+
+        const startY = breakPoints[i];
+        const endY = breakPoints[i + 1];
+        const cropHeight = endY - startY;
+
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = cropHeight;
+        const ctx = tempCanvas.getContext('2d');
+
+        ctx.drawImage(
+          canvas,
+          0, startY, canvas.width, cropHeight,
+          0, 0, canvas.width, cropHeight
+        );
+
+        const croppedImgData = tempCanvas.toDataURL('image/jpeg', 0.95);
+        const destHeight = cropHeight * canvasToPdf;
+
+        pdf.addImage(
+          croppedImgData,
+          'JPEG',
+          0,
+          0,
+          scaledWidth,
+          destHeight,
+          undefined,
+          'FAST'
+        );
+      }
+
+      pdf.save('Nagarassha_Vithusan_Resume.pdf');
+
+      pdfLoading.classList.remove('show');
+      showToast('PDF downloaded successfully!', '💾');
+
+      charIndex = 0;
+      isDeleting = false;
+      typeLoop();
+
+    } catch (err) {
+      console.error('PDF Error:', err);
+      pdfLoading.classList.remove('show');
+      showToast('PDF generation failed. Try again.', '❌', true);
+
+      charIndex = 0;
+      isDeleting = false;
+      typeLoop();
+    }
   });
 
   document.getElementById('printBtn').addEventListener('click', () => window.print());
 
-  /* SCROLL TOP */
   const scrollBtn = document.getElementById('scrollTop');
   window.addEventListener('scroll', () => {
     scrollBtn.classList.toggle('show', window.scrollY > 300);
   });
   scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  /* TOAST */
   const toast = document.getElementById('toast');
   const toastMsg = document.getElementById('toastMsg');
   const toastIcon = document.getElementById('toastIcon');
@@ -1523,17 +1148,11 @@
     toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
   }
 
-  /* SHORTCUTS */
   document.addEventListener('keydown', (e) => {
-    const tag = document.activeElement.tagName;
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-    if (e.key === 'd' && !e.ctrlKey && !e.metaKey && !e.altKey) themeToggle.click();
-    if (e.key === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) langBtn.click();
     if (e.key === 'Escape') window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  applyLanguage(currentLang);
-  console.log('%c✅ Resume loaded — Enhanced typing + Official WhatsApp QR', 'color:#10b981;font-weight:bold;font-size:14px;');
+  console.log('%c✅ Resume loaded — 2-page PDF with section-aware break', 'color:#10b981;font-weight:bold;font-size:14px;');
 })();
 </script>
 
